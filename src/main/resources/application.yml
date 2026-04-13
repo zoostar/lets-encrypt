@@ -1,0 +1,15 @@
+logging:
+  file:
+    name: "logs/@project.build.finalName@.log"
+  level:
+    root: info
+    '[net.zoostar]': trace
+  logback:
+    rollingpolicy:
+      file-name-pattern: "logs/archive/@project.build.finalName@-%d{yyyy-MM-dd}.%i.log.zip"
+      max-history: 10
+
+spring:
+  output:
+    ansi:
+      enabled: never
