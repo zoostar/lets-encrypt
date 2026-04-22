@@ -53,7 +53,7 @@
                   <archive>
                       <manifest>
                           <addClasspath>true</addClasspath>
-                          <mainClass>com.zoostar.LetsEncrypt</mainClass>
+                          <mainClass>net.zoostar.lez.LetsEncrypt</mainClass>
                       </manifest>
                   </archive>
               </configuration>
