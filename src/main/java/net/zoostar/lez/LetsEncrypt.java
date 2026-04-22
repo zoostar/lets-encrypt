@@ -476,52 +476,19 @@ public class LetsEncrypt extends JDialog {
 		buttonPanel.add(cancelBtn);
 
 		userKeyFileBrowseButton.addActionListener(ae -> {
-			JFileChooser chooser = new JFileChooser();
-			if (chooser.showOpenDialog(LetsEncrypt.this) == JFileChooser.APPROVE_OPTION) {
-				userKeyFile = chooser.getSelectedFile();
-				userKeyField.setText(userKeyFile.getAbsolutePath());
-			}
-			
+			chooseUserKeyFile();
 		});
 
 		domainKeyFileBrowseButton.addActionListener(ae -> {
-			JFileChooser chooser = new JFileChooser();
-			if (chooser.showOpenDialog(LetsEncrypt.this) == JFileChooser.APPROVE_OPTION) {
-				domainKeyFile = chooser.getSelectedFile();
-				domainKeyField.setText(domainKeyFile.getAbsolutePath());
-			}
+			chooseDomainKeyFile();
 		});
 
 		domainChainFileBrowseButton.addActionListener(ae -> {
-			JFileChooser chooser = new JFileChooser();
-			if (chooser.showOpenDialog(LetsEncrypt.this) == JFileChooser.APPROVE_OPTION) {
-				domainChainFile = chooser.getSelectedFile();
-				domainChainField.setText(domainChainFile.getAbsolutePath());
-			}
+			chooseDomainChainFile();
 		});
 
-		submitBtn.addActionListener(ae -> {
-			if(!StringUtils.hasText(domainField.getText()) || userKeyFile == null) {
-				throw new IllegalArgumentException("Domain name is required!");
-			} else {
-				submitted = true;
-				String domain = domainField.getText().trim();
-				try {
-					encrypt(domain);
-				} catch (InterruptedException e) {
-					log.warn(e.getMessage());
-					Thread.currentThread().interrupt();
-				} catch (IOException | AcmeException e) {
-					log.error(e.getMessage(), e);
-				} finally {
-					dispose(); // Close dialog
-				}
-			}
-		});
-
-		cancelBtn.addActionListener(ae -> 
-			System.exit(0) // Exit app if cancelled on launch
-		);
+		submitBtn.addActionListener(ae -> handleSubmit());
+		cancelBtn.addActionListener(ae -> System.exit(0)); // Exit app if cancelled on launch
 
 		add(inputPanel, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
@@ -529,6 +496,51 @@ public class LetsEncrypt extends JDialog {
 		pack();
 		setLocationRelativeTo(null); // Center on screen
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+	}
+	
+	// Helper methods extracted to reduce cognitive complexity in initUI()
+	
+	private void chooseUserKeyFile() {
+		JFileChooser chooser = new JFileChooser();
+		if (chooser.showOpenDialog(LetsEncrypt.this) == JFileChooser.APPROVE_OPTION) {
+			userKeyFile = chooser.getSelectedFile();
+			userKeyField.setText(userKeyFile.getAbsolutePath());
+		}
+	}
+
+	private void chooseDomainKeyFile() {
+		JFileChooser chooser = new JFileChooser();
+		if (chooser.showOpenDialog(LetsEncrypt.this) == JFileChooser.APPROVE_OPTION) {
+			domainKeyFile = chooser.getSelectedFile();
+			domainKeyField.setText(domainKeyFile.getAbsolutePath());
+		}
+	}
+
+	private void chooseDomainChainFile() {
+		JFileChooser chooser = new JFileChooser();
+		if (chooser.showOpenDialog(LetsEncrypt.this) == JFileChooser.APPROVE_OPTION) {
+			domainChainFile = chooser.getSelectedFile();
+			domainChainField.setText(domainChainFile.getAbsolutePath());
+		}
+	}
+
+	private void handleSubmit() {
+		if (!StringUtils.hasText(domainField.getText()) || userKeyFile == null) {
+			throw new IllegalArgumentException("Domain name is required!");
+		}
+
+		submitted = true;
+		String domain = domainField.getText().trim();
+		try {
+			encrypt(domain);
+		} catch (InterruptedException e) {
+			log.warn(e.getMessage());
+			Thread.currentThread().interrupt();
+		} catch (IOException | AcmeException e) {
+			log.error(e.getMessage(), e);
+		} finally {
+			dispose(); // Close dialog
+		}
 	}
 
 	public static void main(String[] args) {
