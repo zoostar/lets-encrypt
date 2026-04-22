@@ -6,7 +6,8 @@
     <artifactId>lets-encrypt</artifactId>
     <version>1.0.0</version>
     <name>Let's Encrypt Zoostar</name>
-    <description>Java Swing Application for Auto SSL Cert Generation using Let's Encrypt</description>
+    <description>Java Swing Application for Auto SSL Cert Generation using Let's
+        Encrypt</description>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -46,18 +47,20 @@
     <build>
         <finalName>lets-encrypt</finalName>
         <plugins>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-jar-plugin</artifactId>
-              <configuration>
-                  <archive>
-                      <manifest>
-                          <addClasspath>true</addClasspath>
-                          <mainClass>net.zoostar.lez.LetsEncrypt</mainClass>
-                      </manifest>
-                  </archive>
-              </configuration>
-          </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>net.zoostar.lez.LetsEncrypt</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
