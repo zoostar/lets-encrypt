@@ -475,17 +475,11 @@ public class LetsEncrypt extends JDialog {
 		buttonPanel.add(submitBtn);
 		buttonPanel.add(cancelBtn);
 
-		userKeyFileBrowseButton.addActionListener(ae -> {
-			chooseUserKeyFile();
-		});
+		userKeyFileBrowseButton.addActionListener(al -> chooseUserKeyFile());
 
-		domainKeyFileBrowseButton.addActionListener(ae -> {
-			chooseDomainKeyFile();
-		});
+		domainKeyFileBrowseButton.addActionListener(al -> chooseDomainKeyFile());
 
-		domainChainFileBrowseButton.addActionListener(ae -> {
-			chooseDomainChainFile();
-		});
+		domainChainFileBrowseButton.addActionListener(al -> chooseDomainChainFile());
 
 		submitBtn.addActionListener(ae -> handleSubmit());
 		cancelBtn.addActionListener(ae -> System.exit(0)); // Exit app if cancelled on launch
