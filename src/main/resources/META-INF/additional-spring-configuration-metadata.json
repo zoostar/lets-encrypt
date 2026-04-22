@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "ca.url",
+  "type": "java.lang.String",
+  "description": "URL of Let's Encrypt Cert"
+}]}
